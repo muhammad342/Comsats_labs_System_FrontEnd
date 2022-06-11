@@ -11,17 +11,55 @@ import {
   CFormTextarea
 } from '@coreui/react'
 import { useSelector } from 'react-redux'
+import { BASE_URL } from 'src/services/axios';
 import axios from 'axios';
-
 import Breadcrumbs from 'src/components/Breadcrumbs' 
 const SoftwareInstallation = () => {
-    const[loading,setLoading]=useState(false)
+    const [loading,setLoading]=useState(false)
     const [labs, setLabs] = useState([])
-  
+    const [name,setName]=useState('')
+    const [courseCode,setCourseCode]=useState('')
+    const [courseTitle,setCourseTitle]=useState('')
+    const [numberOfStudent,setNumberOfStudent]=useState()
+    const [lab,setLab]=useState('')
+    const [type,setType]=useState('Software')
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin 
+
   const breadCrumbsInfo = [{ name: "Home", href: '/' }, { name: "Add Request" }]
 
-  const submitHandler=()=>{
+  const submitHandler=async (e)=>{
+      e.preventDefault()
+      setLoading(true)
+      const t=typeof(type)
+      console.log(t)
+      try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        }
+        const user =userInfo._id
+        console.log(user)
+          const {data} = await axios.post(`${BASE_URL}/request/addFacultyRequest`,{user,name,courseCode,courseTitle,numberOfStudent,lab,type},config)
+          if(data){
+              setLoading(false)
+              console.log(data)
+              
+
+          }
+      } catch (error) {
+          console.log(error)
+          
+      }
       console.log('submitted')
+      console.log(name)
+      console.log(lab)
+      console.log(courseCode)
+      console.log(courseTitle)
+      console.log(numberOfStudent)
+      console.log(type)
   }
   useEffect(async () => {
       try {
@@ -34,7 +72,7 @@ const SoftwareInstallation = () => {
           console.log(error)
       }
   
-    console.log("useEffect")
+    
   }, [])
   return (
     <>
@@ -43,7 +81,7 @@ const SoftwareInstallation = () => {
                 <div className="bg-white p-3 shadow-sm rounded-sm mt-3">
                     <CRow className="justify-content-center">
                         <CCol md={12} className="bg-white rounded-lg">
-                            <CForm className="row mx-4 g-3" onSubmit={submitHandler}>
+                            <CForm className="row mx-4 g-3" onSubmit={submitHandler} >
 
 
                                 <CCol md={12}>
@@ -56,8 +94,8 @@ const SoftwareInstallation = () => {
                                         </CInputGroupText>
                                         <CFormInput
                                             placeholder="Name of Software"
-                                            // value={request.title}
-                                            // onChange={(e) => setRequest({ ...request, title: e.target.value })}
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
                                             required
                                         />
                                     </CInputGroup>
@@ -69,7 +107,7 @@ const SoftwareInstallation = () => {
                                         </CInputGroupText>
                                         <CFormSelect
                                             aria-label="Default select example"
-                                            // onChange={(e) => setRequest({ ...request, type: e.target.value })}
+                                            
                                         >
                                             <option>Request Type</option>
                                             <option value="software">software</option>
@@ -83,8 +121,8 @@ const SoftwareInstallation = () => {
                                         </CInputGroupText>
                                         <CFormInput
                                             placeholder="Course Code"
-                                            // value={request.title}
-                                            // onChange={(e) => setRequest({ ...request, title: e.target.value })}
+                                            value={courseCode}
+                                            onChange={(e) => setCourseCode(e.target.value)}
                                             required
                                         />
                                     </CInputGroup>
@@ -96,13 +134,13 @@ const SoftwareInstallation = () => {
                                         </CInputGroupText>
                                         <CFormSelect
                                             aria-label="Default select example"
-                                            // onChange={(e) => setRequest({ ...request, lab: e.target.value })}
+                                            onChange={(e)=>setLab(e.target.value)}
                                         >
                                             <option>Select Lab</option>
 
      { labs &&  
   labs.map((item) => {
-    return <option value={item._id}>{item.name}</option>
+    return <option   value={item.name}>{item.name}</option>
   })}   
                                         </CFormSelect>
                                     </CInputGroup>
@@ -115,8 +153,8 @@ const SoftwareInstallation = () => {
                                         </CInputGroupText>
                                         <CFormInput
                                             placeholder="Course Title"
-                                            // value={request.title}
-                                            // onChange={(e) => setRequest({ ...request, title: e.target.value })}
+                                            value={courseTitle}
+                                            onChange={(e) => setCourseTitle(e.target.value)}
                                             required
                                         />
                                     </CInputGroup>
@@ -129,8 +167,8 @@ const SoftwareInstallation = () => {
                                         <CFormInput
                                             placeholder=" Number of student"
                                             type='Number'
-                                            // value={request.title}
-                                            // onChange={(e) => setRequest({ ...request, title: e.target.value })}
+                                            value={numberOfStudent}
+                                            onChange={(e) => setNumberOfStudent(e.target.value)}
                                             required
                                         />
                                     </CInputGroup>
@@ -139,8 +177,8 @@ const SoftwareInstallation = () => {
                               
                                 <CRow className="flex items-center justify-start mb-3">
                                     <CCol md={3} xs={8}>
-                                        <button
-                                            type="submit"
+                                        <button 
+                                            type="submit" 
                                             className="py-2 px-4 mt-2 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
                                         >
                                             {loading ? "Adding..." : "Add Request"}

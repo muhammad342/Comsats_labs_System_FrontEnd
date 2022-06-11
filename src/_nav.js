@@ -570,6 +570,11 @@ export const TeacherNav = [
         name: 'Software Installation',
         to: '/softwareinstallationrequest',
       },
+      {
+        component: CNavItem,
+        name: 'All Request',
+        to: '/AllRequest',
+      },
     ],
   },
   // {
