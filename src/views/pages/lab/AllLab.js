@@ -39,10 +39,7 @@ const AllLab = () => {
 
     AllLab()
   }, [labs])
-  function onChange(checkedValues) {
-    console.log('checked = ', checkedValues)
-    setSoftwares(checkedValues)
-  }
+
   const submitHandler = (lab) => {
     console.log(lab)
     setName(lab.name)
@@ -54,10 +51,8 @@ const AllLab = () => {
   }
   const handleUpdate = async () => {
     if (software) {
-      setSoftwares([...softwares, software])
-      const updated = [...softwares, software]
       try {
-        const { data } = await axios.put('/lab/updateLab', { _id: id, softwares: updated })
+        const { data } = await axios.put('/lab/updateLab', { _id: id, softwares: software })
         if (data) {
           setShow(true)
         }
@@ -211,119 +206,6 @@ const AllLab = () => {
                             />
                           </CInputGroup>
                         </CCol>
-                        <CRow>
-                          <Checkbox.Group style={{ width: '100vw' }} onChange={onChange}>
-                            <CCol md={12}>
-                              <h3>softwares:</h3>
-
-                              <Checkbox value="Netbeans" className="me-3">
-                                {' '}
-                                Netbeans
-                              </Checkbox>
-
-                              <Checkbox value="Erwin" className="me-3">
-                                {' '}
-                                Erwin
-                              </Checkbox>
-
-                              <Checkbox value="SQL Server" className="me-3">
-                                {' '}
-                                SQL Server
-                              </Checkbox>
-
-                              <Checkbox value="MySQL" className="me-3">
-                                {' '}
-                                MySQL
-                              </Checkbox>
-
-                              <Checkbox value="Code Blocks" className="me-3">
-                                {' '}
-                                Code Blocks
-                              </Checkbox>
-
-                              <Checkbox value="Packet Tracer 6.2" className="me-3">
-                                {' '}
-                                Packet Tracer 6.2
-                              </Checkbox>
-
-                              <Checkbox value="Just In Mind" className="me-3">
-                                {' '}
-                                Just In Mind
-                              </Checkbox>
-                              <Checkbox value="File of Ubuntu" className="me-3">
-                                {' '}
-                                File of Ubuntu
-                              </Checkbox>
-                              <Checkbox value="PHPSTORM" className="me-3">
-                                {' '}
-                                PHPSTORM
-                              </Checkbox>
-                              <Checkbox value="XAMPP and WAMP" className="me-3">
-                                {' '}
-                                XAMPP and WAMP
-                              </Checkbox>
-                              <Checkbox value="MySQL Work Bench" className="me-3">
-                                {' '}
-                                MySQL Work Bench
-                              </Checkbox>
-                              <Checkbox value="MS project 2010" className="me-3">
-                                {' '}
-                                MS project 2010
-                              </Checkbox>
-                              <Checkbox value="MS professional visio" className="me-3">
-                                {' '}
-                                MS professional visio
-                              </Checkbox>
-                              <Checkbox value="Balmasiq" className="me-3">
-                                {' '}
-                                Balmasiq
-                              </Checkbox>
-                              <Checkbox value="EMU8086" className="me-3">
-                                {' '}
-                                EMU8086
-                              </Checkbox>
-                              <Checkbox value="Eclipse" className="me-3">
-                                {' '}
-                                Eclipse
-                              </Checkbox>
-                              <Checkbox value="Java" className="me-3">
-                                {' '}
-                                Java
-                              </Checkbox>
-                              <Checkbox value="MS Office" className="me-3">
-                                {' '}
-                                MS Office
-                              </Checkbox>
-                              <Checkbox value="MS Access" className="me-3">
-                                {' '}
-                                MS Access
-                              </Checkbox>
-                              <Checkbox value="SunScratchday" className="me-3">
-                                {' '}
-                                Scratch
-                              </Checkbox>
-                              <Checkbox value="Matlab" className="me-3">
-                                {' '}
-                                Matlab
-                              </Checkbox>
-                              <Checkbox value="C++" className="me-3">
-                                {' '}
-                                C++
-                              </Checkbox>
-                              <Checkbox value="Notepad++" className="me-3">
-                                {' '}
-                                Notepad++
-                              </Checkbox>
-                              <Checkbox value="Workstation" className="me-3">
-                                {' '}
-                                Workstation
-                              </Checkbox>
-                              <p className="fw-light">
-                                check the boxes you want to add softwares to this lab
-                              </p>
-                            </CCol>
-                          </Checkbox.Group>
-                        </CRow>
                       </CForm>
                     </CCol>
                   </CRow>
