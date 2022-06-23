@@ -1,292 +1,294 @@
-import React,{useState,useEffect} from 'react'
-import { VictoryPie } from "victory";
-import { Card } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react'
+import { VictoryPie } from 'victory'
+import { Card } from 'react-bootstrap'
 import Breadcrumbs from 'src/components/Breadcrumbs'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
-import { BASE_URL } from 'src/services/axios';
+import { BASE_URL } from 'src/services/axios'
 const SemesterWise = () => {
-  const [completed,setCompleted]=useState()
-  const [progress,setProgress]=useState()
-  const [rejected,setRejected]=useState()
-  const [rejectedByDco,setRejectedByDco]=useState()
-  const [approvedByDco,setApprovedByDco]=useState()
-  const [rejectedByCommittee,setRejectedByCommittee]=useState()
-  const [approvedByCommittee,setApprovedByCommittee]=useState()
-  const [rejectedByWorks,setRejectedByWorks]=useState()
-  const [approvedByWorks,setApprovedByWorks]=useState()
-  const [rejectedByNOC,setRejectedByNOC]=useState()
-  const [approvedByNOC,setApprovedByNOC]=useState()
+  const [completed, setCompleted] = useState()
+  const [progress, setProgress] = useState()
+  const [rejected, setRejected] = useState()
+  const [rejectedByDco, setRejectedByDco] = useState()
+  const [approvedByDco, setApprovedByDco] = useState()
+  const [rejectedByCommittee, setRejectedByCommittee] = useState()
+  const [approvedByCommittee, setApprovedByCommittee] = useState()
+  const [rejectedByWorks, setRejectedByWorks] = useState()
+  const [approvedByWorks, setApprovedByWorks] = useState()
+  const [rejectedByNOC, setRejectedByNOC] = useState()
+  const [approvedByNOC, setApprovedByNOC] = useState()
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
-  const breadCrumbsInfo = [{ name: "Home", href: '/' }, { name: "Reports" }, { name: "Requests" }];
+  const breadCrumbsInfo = [{ name: 'Home', href: '/' }, { name: 'Reports' }, { name: 'Requests' }]
   const data = [
-    { x: "Completed", y:  completed && completed},
-    { x: "Rejected", y: rejected && rejected },
-    { x: "Progress", y:  progress && progress},
+    { x: 'Completed', y: completed && completed },
+    { x: 'Rejected', y: rejected && rejected },
+    { x: 'Progress', y: progress && progress },
   ]
-  const getCompletedRequests=async()=>{
+  const getCompletedRequests = async () => {
     const config = {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
-  }
-    const {data}= await axios.get(`${BASE_URL}/request/allCompletedRequest`,config)
-    
+    }
+    const { data } = await axios.get(`${BASE_URL}/request/allCompletedRequest`, config)
+
     setCompleted(data.length)
   }
 
-  const getInProgressComplaints=async()=>{
+  const getInProgressComplaints = async () => {
     const config = {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
-  }
-    const {data}= await axios.get(`${BASE_URL}/request/allInProgressRequests`,config)
-    
+    }
+    const { data } = await axios.get(`${BASE_URL}/request/allInProgressRequests`, config)
+
     setProgress(data.length)
   }
-  const getRejectedComplaints=async()=>{
+  const getRejectedComplaints = async () => {
     const config = {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
-  }
-    const {data}= await axios.get(`${BASE_URL}/request/allRejectedRequest`,config)
-   
+    }
+    const { data } = await axios.get(`${BASE_URL}/request/allRejectedRequest`, config)
+
     setRejected(data.length)
   }
-  const getRejectedComplaintsByDco=async()=>{
+  const getApprovedRequestsByDco = async () => {
     const config = {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
-  }
-    const {data}= await axios.get(`${BASE_URL}/complaint/allRejectedByDco`,config)
- 
-    setRejectedByDco(data.length)
-  }
-  const getApprovedComplaintsByDco=async()=>{
-    const config = {
-      headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
-      },
-  }
-    const {data}= await axios.get(`${BASE_URL}/complaint/allApprovedByDco`,config)
- 
+    }
+    const { data } = await axios.get(`${BASE_URL}/request/allRequestAprrovedByDco`, config)
+
     setApprovedByDco(data.length)
   }
-  const getApprovedComplaintsByCommittee=async()=>{
+  const getRejectedRequestByDco = async () => {
     const config = {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
+    }
+    const { data } = await axios.get(`${BASE_URL}/request/allRequestRejectedByDcoReport`, config)
+
+    setRejectedByDco(data.length)
   }
-    const {data}= await axios.get(`${BASE_URL}/complaint/allComplaintApprovedByCommittee`,config)
- 
+  const getApprovedRequestByCommittee = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await axios.get(
+      `${BASE_URL}/request/allRequestAprrovedByCommitteeReport`,
+      config,
+    )
+
     setApprovedByCommittee(data.length)
   }
-  const getRejectedComplaintsByCommittee=async()=>{
+  const getRejectedRequestsByCommittee = async () => {
     const config = {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
-  }
-    const {data}= await axios.get(`${BASE_URL}/complaint/allComplaintRejectedByCommittee`,config)
- 
+    }
+    const { data } = await axios.get(
+      `${BASE_URL}/request/allRequestRejectedByCommitteeReport`,
+      config,
+    )
+
     setRejectedByCommittee(data.length)
   }
-  const getApprovedComplaintsByWorks=async()=>{
+  const getApprovedRequestsByWorks = async () => {
     const config = {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
-  }
-    const {data}= await axios.get(`${BASE_URL}/complaint/allComplaintApprovedByWorks`,config)
- 
+    }
+    const { data } = await axios.get(`${BASE_URL}/request/allRequestAprrovedByWorksReport`, config)
+
     setApprovedByWorks(data.length)
   }
-  const getRejectedComplaintsByWorks=async()=>{
+  const getRejectedRequestsByWorks = async () => {
     const config = {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
-  }
-    const {data}= await axios.get(`${BASE_URL}/complaint/allComplaintRejectedByWorks`,config)
- 
+    }
+    const { data } = await axios.get(`${BASE_URL}/request/allRequestRejectedByWorksReport`, config)
+
     setRejectedByWorks(data.length)
   }
 
-  const getApprovedComplaintsByNOC=async()=>{
+  const getApprovedRequestsByNOC = async () => {
     const config = {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
-  }
-    const {data}= await axios.get(`${BASE_URL}/complaint/allComplaintApprovedByNOC`,config)
- 
+    }
+    const { data } = await axios.get(`${BASE_URL}/request/allRequestAprrovedByNOCReport`, config)
+
     setApprovedByNOC(data.length)
   }
-  const getRejectedComplaintsByNOC=async()=>{
+  const getRejectedRequestsByNOC = async () => {
     const config = {
       headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
       },
-  }
-    const {data}= await axios.get(`${BASE_URL}/complaint/allComplaintRejectedByNOC`,config)
- 
+    }
+    const { data } = await axios.get(`${BASE_URL}/request/allRequestRejectedByNOCReport`, config)
+
     setRejectedByNOC(data.length)
   }
-useEffect(()=>{
-  getCompletedRequests()
-  getInProgressComplaints()
-  getRejectedComplaints()
-  getRejectedComplaintsByDco()
-  getApprovedComplaintsByDco()
-  getRejectedComplaintsByCommittee()
-  getApprovedComplaintsByCommittee()
-  getApprovedComplaintsByWorks()
-  getRejectedComplaintsByWorks()
-  getApprovedComplaintsByNOC()
-  getRejectedComplaintsByNOC()
-},[])
+  useEffect(() => {
+    getCompletedRequests()
+    getInProgressComplaints()
+    getRejectedComplaints()
+    getApprovedRequestsByDco()
+    getRejectedRequestByDco()
+    getApprovedRequestByCommittee()
+    getRejectedRequestsByCommittee()
+    getApprovedRequestsByWorks()
+    getRejectedRequestsByWorks()
+    getApprovedRequestsByNOC()
+    getRejectedRequestsByNOC()
+  }, [])
   return (
     <>
       <Breadcrumbs breadCrumbsInfo={breadCrumbsInfo} />
-      <div className='row' style={{ margin: "0px 1px" }}>
-
-        <div className='col-12 bg-white rounded-sm d-flex justify-content-center align-items-center '>
-          <div  >
-            <VictoryPie data={data} radius={100} colorScale={["#47B39C", "#EC6B56", "#FFC154"]} />
+      <div className="row" style={{ margin: '0px 1px' }}>
+        <div className="col-12 bg-white rounded-sm d-flex justify-content-center align-items-center ">
+          <div>
+            <VictoryPie data={data} radius={100} colorScale={['#47B39C', '#EC6B56', '#FFC154']} />
           </div>
 
-          <div  >
-            <div className='d-flex align-items-center'>
-              <div style={{ width: "1.3rem", height: "1.3rem", background: "#47B39C" }} ></div>
-              <div className='ml-1' style={{ fontSize: "1rem" }}>{completed} Completed </div>
+          <div>
+            <div className="d-flex align-items-center">
+              <div style={{ width: '1.3rem', height: '1.3rem', background: '#47B39C' }}></div>
+              <div className="ml-1" style={{ fontSize: '1rem' }}>
+                {completed} Completed{' '}
+              </div>
             </div>
-            <div className='d-flex align-items-center'>
-              <div style={{ width: "1.3rem", height: "1.3rem", background: "#EC6B56" }} ></div>
-              <div className='ml-1' style={{ fontSize: "1rem" }}>{ rejected} rejected </div>
+            <div className="d-flex align-items-center">
+              <div style={{ width: '1.3rem', height: '1.3rem', background: '#EC6B56' }}></div>
+              <div className="ml-1" style={{ fontSize: '1rem' }}>
+                {rejected} rejected{' '}
+              </div>
             </div>
-            <div className='d-flex align-items-center'>
-              <div style={{ width: "1.3rem", height: "1.3rem", background: "#FFC154" }} ></div>
-              <div className='ml-1' style={{ fontSize: "1rem" }}>{progress} progress  </div>
+            <div className="d-flex align-items-center">
+              <div style={{ width: '1.3rem', height: '1.3rem', background: '#FFC154' }}></div>
+              <div className="ml-1" style={{ fontSize: '1rem' }}>
+                {progress} progress{' '}
+              </div>
             </div>
-            <div className='d-flex align-items-center'>
-              <div style={{ width: "1.3rem", height: "1.3rem", background: "#007ED6" }} ></div>
-              <div className='ml-1' style={{ fontSize: "1rem" }}>{completed + progress + rejected} Total </div>
+            <div className="d-flex align-items-center">
+              <div style={{ width: '1.3rem', height: '1.3rem', background: '#007ED6' }}></div>
+              <div className="ml-1" style={{ fontSize: '1rem' }}>
+                {completed + progress + rejected} Total{' '}
+              </div>
             </div>
-
           </div>
         </div>
       </div>
-      <div className='row mt-4' >
-        <div className='col-6 '>
-          <Card >
-            <Card.Header style={{ backgroundColor: "#3C4B64", color: "#fff" }}>DCO</Card.Header>
+      <div className="row mt-4">
+        <div className="col-6 ">
+          <Card>
+            <Card.Header style={{ backgroundColor: '#3C4B64', color: '#fff' }}>DCO</Card.Header>
             <Card.Body>
               <div className="row">
                 <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
                   <p> Approved Requests</p>
-                  <p>100</p>
-
+                  <p>{approvedByDco}</p>
                 </div>
               </div>
 
               <div className="row mt-1">
                 <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
                   <p> Rejected Requests</p>
-                  <p>20</p>
-
-                </div>
-              </div>
-
-            </Card.Body>
-          </Card>
-        </div>
-
-        <div className='col-6   '>
-          <Card >
-            <Card.Header style={{ backgroundColor: "#3C4B64", color: "#fff" }}>COMMITTEE</Card.Header>
-            <Card.Body>
-              <div className="row">
-                <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
-                  <p> Approved Requests</p>
-                  <p>100</p>
-
-                </div>
-              </div>
-
-              <div className="row mt-1">
-                <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
-                  <p> Rejected Requests</p>
-                  <p>20</p>
-
-                </div>
-              </div>
-
-            </Card.Body>
-          </Card>
-        </div>
-        <div className='col-6 mt-2 '>
-          <Card >
-            <Card.Header style={{ backgroundColor: "#3C4B64", color: "#fff" }}>WORKS</Card.Header>
-            <Card.Body>
-              <div className="row">
-                <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
-                  <p> Approved Requests</p>
-                  <p>100</p>
-
-                </div>
-              </div>
-
-              <div className="row mt-1">
-                <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
-                  <p> Rejected Requests</p>
-                  <p>20</p>
-
+                  <p>{rejectedByDco}</p>
                 </div>
               </div>
             </Card.Body>
           </Card>
         </div>
-        <div className='col-6 mt-2 '>
-          <Card >
-            <Card.Header style={{ backgroundColor: "#3C4B64", color: "#fff" }}>NOC</Card.Header>
+
+        <div className="col-6   ">
+          <Card>
+            <Card.Header style={{ backgroundColor: '#3C4B64', color: '#fff' }}>
+              COMMITTEE
+            </Card.Header>
             <Card.Body>
               <div className="row">
                 <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
                   <p> Approved Requests</p>
-                  <p>100</p>
-
+                  <p>{approvedByCommittee}</p>
                 </div>
               </div>
 
               <div className="row mt-1">
                 <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
                   <p> Rejected Requests</p>
-                  <p>20</p>
-
+                  <p>{rejectedByCommittee}</p>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+        </div>
+        <div className="col-6 mt-2 ">
+          <Card>
+            <Card.Header style={{ backgroundColor: '#3C4B64', color: '#fff' }}>WORKS</Card.Header>
+            <Card.Body>
+              <div className="row">
+                <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
+                  <p> Approved Requests</p>
+                  <p>{approvedByWorks}</p>
                 </div>
               </div>
 
+              <div className="row mt-1">
+                <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
+                  <p> Rejected Requests</p>
+                  <p>{rejectedByWorks}</p>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+        </div>
+        <div className="col-6 mt-2 ">
+          <Card>
+            <Card.Header style={{ backgroundColor: '#3C4B64', color: '#fff' }}>NOC</Card.Header>
+            <Card.Body>
+              <div className="row">
+                <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
+                  <p> Approved Requests</p>
+                  <p>{approvedByNOC}</p>
+                </div>
+              </div>
+
+              <div className="row mt-1">
+                <div className="col-12 bg-indigo-100 d-flex align-items-center justify-content-between  pt-3 pb-1">
+                  <p> Rejected Requests</p>
+                  <p>{rejectedByNOC}</p>
+                </div>
+              </div>
             </Card.Body>
           </Card>
         </div>
       </div>
-
     </>
   )
 }
